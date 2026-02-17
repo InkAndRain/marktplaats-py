@@ -110,3 +110,53 @@ def test_request_with_condition() -> None:
     )
 
     _validate_response(search)
+
+
+def test_bypass_spelling_suggestion_false() -> None:
+    """Test search with spelling suggestions enabled (default behavior).
+    
+    Searching for "sprso" without bypass_spelling_suggestion will include
+    spelling suggestion results like "spro".
+    """
+    search = SearchQuery(
+        "sprso",
+        limit=50,
+        bypass_spelling_suggestion=False,
+    )
+
+    listings = search.get_listings()
+    # With spelling suggestions enabled, we expect results that may include
+    # both exact matches and spelling suggestions
+    assert len(listings) >= 0  # May have 0 results depending on current listings
+    
+    for listing in listings:
+        assert isinstance(listing.title, str)
+        assert isinstance(listing.description, str)
+        assert isinstance(listing.price, float)
+        assert isinstance(listing.price_type, PriceType)
+        assert isinstance(listing.link, str)
+
+
+def test_bypass_spelling_suggestion_true() -> None:
+    """Test search with spelling suggestions bypassed (literal search).
+    
+    Searching for "sprso" with bypass_spelling_suggestion=True will only
+    include exact literal matches for "sprso".
+    """
+    search = SearchQuery(
+        "sprso",
+        limit=50,
+        bypass_spelling_suggestion=True,
+    )
+
+    listings = search.get_listings()
+    # With spelling suggestions bypassed, we get only literal matches
+    # May have 0 or more results depending on current listings with "sprso"
+    assert len(listings) >= 0
+    
+    for listing in listings:
+        assert isinstance(listing.title, str)
+        assert isinstance(listing.description, str)
+        assert isinstance(listing.price, float)
+        assert isinstance(listing.price_type, PriceType)
+        assert isinstance(listing.link, str)

@@ -48,6 +48,7 @@ def test_request_1() -> None:
                     "distanceMeters": "1000000",
                     "sortBy": "OPTIMIZED",
                     "sortOrder": "INCREASING",
+                    "bypassSpellingSuggestion": "false",
                     "l1CategoryId": "322",
                     "l2CategoryId": "1415",
                 }
@@ -143,7 +144,7 @@ def test_http_error_400() -> None:
     # This should be the same for other 4xx and 5xx errors
 
     responses.get(
-        "https://www.marktplaats.nl/lrp/api/search?limit=1&offset=0&query=fiets&searchInTitleAndDescription=true&viewOptions=list-view&distanceMeters=1000000&postcode=&sortBy=OPTIMIZED&sortOrder=INCREASING",
+        "https://www.marktplaats.nl/lrp/api/search?limit=1&offset=0&query=fiets&searchInTitleAndDescription=true&viewOptions=list-view&distanceMeters=1000000&postcode=&sortBy=OPTIMIZED&sortOrder=INCREASING&bypassSpellingSuggestion=false",
         status=400,
     )
     with pytest.raises(requests.HTTPError):
@@ -155,7 +156,7 @@ def test_http_error_204() -> None:
     # This should be the same for all other non-200 non-4xx non-5xx errors
 
     responses.get(
-        "https://www.marktplaats.nl/lrp/api/search?limit=1&offset=0&query=fiets&searchInTitleAndDescription=true&viewOptions=list-view&distanceMeters=1000000&postcode=&sortBy=OPTIMIZED&sortOrder=INCREASING",
+        "https://www.marktplaats.nl/lrp/api/search?limit=1&offset=0&query=fiets&searchInTitleAndDescription=true&viewOptions=list-view&distanceMeters=1000000&postcode=&sortBy=OPTIMIZED&sortOrder=INCREASING&bypassSpellingSuggestion=false",
         status=204,
     )
     with pytest.raises(BadStatusCodeError):
@@ -165,7 +166,7 @@ def test_http_error_204() -> None:
 @responses.activate
 def test_invalid_json() -> None:
     responses.get(
-        "https://www.marktplaats.nl/lrp/api/search?limit=1&offset=0&query=fiets&searchInTitleAndDescription=true&viewOptions=list-view&distanceMeters=1000000&postcode=&sortBy=OPTIMIZED&sortOrder=INCREASING",
+        "https://www.marktplaats.nl/lrp/api/search?limit=1&offset=0&query=fiets&searchInTitleAndDescription=true&viewOptions=list-view&distanceMeters=1000000&postcode=&sortBy=OPTIMIZED&sortOrder=INCREASING&bypassSpellingSuggestion=false",
         body="this is some invalid JSON",
     )
     with pytest.raises(JSONDecodeError):
