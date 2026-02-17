@@ -129,6 +129,7 @@ Params = TypedDict(
         "postcode": str,
         "sortBy": str,
         "sortOrder": str,
+        "bypassSpellingSuggestion": str,
         "attributesById[]": NotRequired[list[int]],
         "attributeRanges[]": NotRequired[list[str]],
         "attributesByKey[]": NotRequired[list[str]],
@@ -162,6 +163,7 @@ class SearchQuery:
         category: L1Category | L2Category | None = None,
         extra_attributes: Iterable[int]
         | None = None,  # EXPERIMENTAL: list of integers, just like Condition
+        bypass_spelling_suggestion: bool = False,
     ) -> None:
         if not query and category is None:
             msg = (
@@ -180,6 +182,7 @@ class SearchQuery:
             "postcode": zip_code,
             "sortBy": sort_by.value,
             "sortOrder": sort_order.value,
+            "bypassSpellingSuggestion": str(bypass_spelling_suggestion).lower(),
             "attributesById[]": [],
         }
 
