@@ -14,6 +14,7 @@ authors = [
 requires-python = ">=3.10"
 classifiers = [
     "License :: OSI Approved :: MIT License",
+    "Natural Language :: Dutch",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
@@ -33,11 +34,14 @@ urls.homepage = "https://github.com/jensjeflensje/marktplaats-py"
 [dependency-groups]
 dev = [
     "pytest>=8.3.5",
-    "responses>=0.25.8",
+    "responses>=0.26",
 ]
 
 [tool.ruff]
-lint.select = [ "ALL" ]
+lint.select = [
+    "ALL",
+    "DTZ002", # Useful outside of timezones
+]
 lint.ignore = [
     "COM812", # Conflict with formatter
     "CPY",    # No copyright statements
@@ -65,7 +69,7 @@ lint.per-file-ignores."tests/**/*.py" = [
     "TID251",  # The banned APIs only apply to marktplaats itself
 ]
 lint.flake8-tidy-imports.ban-relative-imports = "all"  # For consistency
-lint.flake8-tidy-imports.banned-api."requests" = { msg = "Use utils.get_request instead" }
+lint.flake8-tidy-imports.banned-api.requests = { msg = "Use utils.get_request instead" }
 lint.isort.combine-as-imports = true
 lint.isort.lines-after-imports = 2
 lint.isort.required-imports = [ "from __future__ import annotations" ]
